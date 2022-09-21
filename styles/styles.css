@@ -1,0 +1,9 @@
+.product-image {
+    width: 500px;
+    height: auto;
+};
+
+.add-new-button {
+    text-decoration: none;
+    border: 1px solid black;
+};
