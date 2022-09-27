@@ -44,43 +44,20 @@ if(isset($_REQUEST['delete'])) {
 
 //Update Product Detail
 if(isset($_REQUEST['update'])) {
+    $id = $_REQUEST['id'];
     $product_name = htmlspecialchars($_REQUEST['product_name']);
     $product_image = htmlspecialchars($_REQUEST['product_image']);
     $product_description = htmlspecialchars($_REQUEST['product_description']);
-
-    if($product_name === "") {
-        $id = $_REQUEST['id'];
-        $sql = "SELECT * from products WHERE product_id = $id";
-        $query = mysqli_query($conn, $sql);
-        $product = mysqli_fetch_assoc($query);
-        $product_name = $product['product_name'];
-        $sql = "UPDATE products SET product_name = '$product_name', product_image = '$product_image', product_description = '$product_description' WHERE product_id = $id";
-        $query = mysqli_query($conn, $sql);
-        header("Location: product-page.php?id=$id");
-    } elseif($product_image === "") {
-        $id = $_REQUEST['id'];
-        $sql = "SELECT * from products WHERE product_id = $id";
-        $query = mysqli_query($conn, $sql);
-        $product = mysqli_fetch_assoc($query);
-        $product_image = $product['product_image'];
-        $sql = "UPDATE products SET product_name = '$product_name', product_image = '$product_image', product_description = '$product_description' WHERE product_id = $id";
-        $query = mysqli_query($conn, $sql);
-        header("Location: product-page.php?id=$id");
-    } elseif($product_description === "") {
-        $id = $_REQUEST['id'];
-        $sql = "SELECT * from products WHERE product_id = $id";
-        $query = mysqli_query($conn, $sql);
-        $product = mysqli_fetch_assoc($query);
-        $product_description = $product['product_description'];
-        $sql = "UPDATE products SET product_name = '$product_name', product_image = '$product_image', product_description = '$product_description' WHERE product_id = $id";
-        $query = mysqli_query($conn, $sql);
-        header("Location: product-page.php?id=$id");
-    }
-
     //If everything is supplied, proceed
     $sql = "UPDATE products SET product_name = '$product_name', product_image = '$product_image', product_description = '$product_description' WHERE product_id = $id";
     $query = mysqli_query($conn, $sql);
     header("Location: product-page.php?id=$id");
+};
+
+function fetch_by_id($prod_id, $conn) {
+    $sql = "SELECT * from products WHERE product_id = $prod_id";
+    $query = mysqli_query($conn, $sql);
+    return mysqli_fetch_assoc($query);
 };
 
 ?>
