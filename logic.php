@@ -5,7 +5,7 @@ $conn = mysqli_connect("localhost", "loren-practice", "pm-loren", "products");
 if(!$conn) {
     echo "Error Connection";
 };
-
+//Get All Posts
 $sql = "SELECT * from products";
 $query = mysqli_query($conn, $sql);
 
