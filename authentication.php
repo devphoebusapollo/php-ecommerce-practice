@@ -7,7 +7,7 @@ class Connection
 
     private $connection;
 
-    //Connect to the database once an new object of this class is created
+    //CONNECT TO THE DATABASE once an new object of this class is created
     public function __construct(private $_host, private $_user, private $_password, private $_database)
     {
         $this->$_host = $_host;
@@ -31,17 +31,17 @@ class Connection
         return $query;
     }
 
-    //Register
+    //REGISTER
     public function register($username, $email, $password)
     {
-        $hash = password_hash($password, PASSWORD_DEFAULT);
+        $hash = password_hash($password, PASSWORD_DEFAULT); //Hash the password before storing to DB
         $sql = "INSERT INTO users(username, email, password) VALUES ('$username', '$email', '$hash')";
         $query = $this->connection->query($sql);
 
         return $query; //boolean result - meaning registration is successful
     }
 
-    //Check Login Credentials and Login
+    //CHECK LOGIN CREDENTIALS AND LOGIN
     public function check_login($username, $password)
     {
         $sql = "SELECT * FROM users WHERE username = '$username'";
@@ -62,7 +62,7 @@ class Connection
         }
     }
 
-    //Logout
+    //LOGOUT
     public function logout()
     {
         session_destroy();
