@@ -31,15 +31,23 @@ class Connection
         return $query;
     }
 
+    //Register
+    public function register($username, $email, $password)
+    {
+        $hash = password_hash($password, PASSWORD_DEFAULT);
+        $sql = "INSERT INTO users(username, email, password) VALUES ('$username', '$email', '$hash')";
+        $query = $this->connection->query($sql);
+    }
+
     //Check Login Credentials and Login
     public function check_login($username, $password)
     {
-        $sql = "SELECT * FROM users WHERE username = '$username' AND password = '$password'";
+        $sql = "SELECT * FROM users WHERE username = '$username'";
         $query = $this->connection->query($sql);
+        $row = $query->fetch_array();
 
-        //Check the number of rows. If the user exists in database, there must be one row. If there is, then the login credentials are correct
-        if ($query->num_rows > 0) {
-            $row = $query->fetch_array();
+        //If the inputed password is the same as the hashed password on the database then proceed to login
+        if(password_verify($password, $row['password'])) {
             return $row;
         } else {
             return false;
@@ -54,6 +62,10 @@ class Connection
 };
 
 $connect_database = new Connection("localhost", "loren-practice", "pm-loren", "products");
+
+if(isset($_REQUEST['register'])) {
+    $connect_database->register($_REQUEST['username'], $_REQUEST['email'], $_REQUEST['password']);
+}
 
 if (isset($_REQUEST['login'])) {
     $user = $connect_database->check_login($_REQUEST['username'], $_REQUEST['password']);
