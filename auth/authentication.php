@@ -58,7 +58,7 @@ class Connection
         } else {
             $_SESSION['message'] = "The Username or Password is incorrect";
             $_SESSION['loggedin'] = false;
-            header("Location: http://localhost/xampp/ecommerce/login.php");
+            header("Location: http://localhost/xampp/ecommerce/auth/login.php");
         }
     }
 
@@ -72,18 +72,18 @@ class Connection
 $connect_database = new Connection("localhost", "loren-practice", "pm-loren", "products");
 
 if (isset($_REQUEST['register'])) {
-    $registered = $connect_database->register($_REQUEST['username'], $_REQUEST['email'], $_REQUEST['password']);
+    $registered = $connect_database->register(htmlspecialchars($_REQUEST['username']), htmlspecialchars($_REQUEST['email']), htmlspecialchars($_REQUEST['password']));
     /* Once registered, Login the user immediately */
     if ($registered) {
-        $connect_database->check_login($_REQUEST['username'], $_REQUEST['password']);
+        $connect_database->check_login(htmlspecialchars($_REQUEST['username']), htmlspecialchars($_REQUEST['password']));
     }
 };
 
 if (isset($_REQUEST['login'])) {
-    $connect_database->check_login($_REQUEST['username'], $_REQUEST['password']);
+    $connect_database->check_login(htmlspecialchars($_REQUEST['username']), htmlspecialchars($_REQUEST['password']));
 };
 
 if (isset($_REQUEST['logout'])) {
     $connect_database->logout();
-    header("Location: http://localhost/xampp/ecommerce/login.php");
+    header("Location: http://localhost/xampp/ecommerce/auth/login.php");
 };
