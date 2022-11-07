@@ -31,6 +31,7 @@ $users = $connect_database->all_users();
         </div>
         <button type="submit" name="login">Login</button>
     </form>
+    <a class="font-bold px-8 py-2 bg-cyan-500 text-lg ml-px" href="http://localhost/xampp/ecommerce/register.php">Register</a>
 </body>
 
 </html>

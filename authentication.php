@@ -37,6 +37,8 @@ class Connection
         $hash = password_hash($password, PASSWORD_DEFAULT);
         $sql = "INSERT INTO users(username, email, password) VALUES ('$username', '$email', '$hash')";
         $query = $this->connection->query($sql);
+
+        return $query; //boolean result - meaning registration is successful
     }
 
     //Check Login Credentials and Login
@@ -47,10 +49,16 @@ class Connection
         $row = $query->fetch_array();
 
         //If the inputed password is the same as the hashed password on the database then proceed to login
-        if(password_verify($password, $row['password'])) {
-            return $row;
+        if (password_verify($password, $row['password'])) {
+            //return $row;
+            $_SESSION['loggedin'] = true;
+            $_SESSION['user'] = $row;
+            unset($_SESSION['message']);
+            header("Location: http://localhost/xampp/ecommerce/index.php");
         } else {
-            return false;
+            $_SESSION['message'] = "The Username or Password is incorrect";
+            $_SESSION['loggedin'] = false;
+            header("Location: http://localhost/xampp/ecommerce/login.php");
         }
     }
 
@@ -63,24 +71,16 @@ class Connection
 
 $connect_database = new Connection("localhost", "loren-practice", "pm-loren", "products");
 
-if(isset($_REQUEST['register'])) {
-    $connect_database->register($_REQUEST['username'], $_REQUEST['email'], $_REQUEST['password']);
-}
+if (isset($_REQUEST['register'])) {
+    $registered = $connect_database->register($_REQUEST['username'], $_REQUEST['email'], $_REQUEST['password']);
+    /* Once registered, Login the user immediately */
+    if ($registered) {
+        $connect_database->check_login($_REQUEST['username'], $_REQUEST['password']);
+    }
+};
 
 if (isset($_REQUEST['login'])) {
-    $user = $connect_database->check_login($_REQUEST['username'], $_REQUEST['password']);
-
-    /* If a user exists */
-    if ($user) {
-        $_SESSION['loggedin'] = true;
-        $_SESSION['user'] = $user;
-        unset($_SESSION['message']);
-        header("Location: http://localhost/xampp/ecommerce/index.php");
-    } else {
-        $_SESSION['message'] = "The Username or Password is incorrect";
-        $_SESSION['loggedin'] = false;
-        header("Location: http://localhost/xampp/ecommerce/login.php");
-    }
+    $connect_database->check_login($_REQUEST['username'], $_REQUEST['password']);
 };
 
 if (isset($_REQUEST['logout'])) {
