@@ -3,6 +3,11 @@
 include_once('./authentication.php');
 $users = $connect_database->all_users();
 
+/* If the user is already logged in, forbid access to login.php and redirect to homepage */
+if (isset($_SESSION['user'])) {
+    header("Location: http://localhost/xampp/ecommerce/index.php");
+};
+
 ?>
 
 <!DOCTYPE html>
@@ -13,13 +18,19 @@ $users = $connect_database->all_users();
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" type="text/css" href="http://localhost/xampp/ecommerce/styles/styles.css">
 </head>
 
 <body>
     <!-- Display the Error message is there is. Meaning, login credetials provided are incorrect -->
     <?php if (isset($_SESSION['message'])) { ?>
         <ul>
-            <li><?php echo $_SESSION['message'] ?></li>
+            <li class="login-error"><?php echo $_SESSION['message'] ?></li>
+        </ul>
+    <?php } ?>
+    <?php if (isset($_SESSION['not_logged'])) { ?>
+        <ul>
+            <li class="login-error"><?php echo $_SESSION['not_logged'] ?></li>
         </ul>
     <?php } ?>
     <form action="./authentication.php" method="POST">

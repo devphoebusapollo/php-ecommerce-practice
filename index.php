@@ -3,6 +3,7 @@
 session_start();
 include_once 'logic.php';
 
+
 ?>
 
 <!DOCTYPE html>
@@ -13,7 +14,6 @@ include_once 'logic.php';
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PHP eCommerce</title>
-    <link rel="stylesheet" type="text/css" href="./styles/styles.css">
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
@@ -21,7 +21,6 @@ include_once 'logic.php';
     <div class="w-3/5 ">
         <div>
             <?php include_once 'header.php' ?>
-
             <?php if (isset($_REQUEST['product'])) { ?>
                 <?php if ($_REQUEST['product'] == "added") { ?>
                     <div>

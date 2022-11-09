@@ -7,7 +7,7 @@ class Connection
 
     private $connection;
 
-    //CONNECT TO THE DATABASE once an new object of this class is created
+    /* CONNECT TO THE DATABASE once an new object of this class is created */
     public function __construct(private $_host, private $_user, private $_password, private $_database)
     {
         $this->$_host = $_host;
@@ -22,7 +22,7 @@ class Connection
         return $this->connection;
     }
 
-    //ADMIN - get all the users in the database
+    /* ADMIN - get all the users in the database */
     public function all_users()
     {
         $sql = "SELECT * from users";
@@ -31,7 +31,7 @@ class Connection
         return $query;
     }
 
-    //REGISTER
+    /* REGISTER */
     public function register($username, $email, $password)
     {
         $hash = password_hash($password, PASSWORD_DEFAULT); //Hash the password before storing to DB
@@ -41,36 +41,40 @@ class Connection
         return $query; //boolean result - meaning registration is successful
     }
 
-    //CHECK LOGIN CREDENTIALS AND LOGIN
+    /* CHECK LOGIN CREDENTIALS AND LOGIN */
     public function check_login($username, $password)
     {
         $sql = "SELECT * FROM users WHERE username = '$username'";
         $query = $this->connection->query($sql);
         $row = $query->fetch_array();
 
-        //If the inputed password is the same as the hashed password on the database then proceed to login
+        /* If the inputed password is the same as the hashed password on the database then proceed to login */
         if (password_verify($password, $row['password'])) {
-            //return $row;
-            $_SESSION['loggedin'] = true;
             $_SESSION['user'] = $row;
+            
+            /* Unset the errors */
             unset($_SESSION['message']);
+            unset($_SESSION['not_logged']);
+        
             header("Location: http://localhost/xampp/ecommerce/index.php");
         } else {
             $_SESSION['message'] = "The Username or Password is incorrect";
-            $_SESSION['loggedin'] = false;
             header("Location: http://localhost/xampp/ecommerce/auth/login.php");
         }
     }
 
-    //LOGOUT
+    /* LOGOUT */
     public function logout()
     {
+        session_unset();
         session_destroy();
     }
 };
 
+/* Create an object from the class */
 $connect_database = new Connection("localhost", "loren-practice", "pm-loren", "products");
 
+/* Register the user */
 if (isset($_REQUEST['register'])) {
     $registered = $connect_database->register(htmlspecialchars($_REQUEST['username']), htmlspecialchars($_REQUEST['email']), htmlspecialchars($_REQUEST['password']));
     /* Once registered, Login the user immediately */
@@ -79,10 +83,12 @@ if (isset($_REQUEST['register'])) {
     }
 };
 
+/* Login user */
 if (isset($_REQUEST['login'])) {
-    $connect_database->check_login(htmlspecialchars($_REQUEST['username']), htmlspecialchars($_REQUEST['password']));
+    $connect_database->check_login(htmlspecialchars(trim($_REQUEST['username'])), htmlspecialchars(trim($_REQUEST['password'])));
 };
 
+/* Logout user */
 if (isset($_REQUEST['logout'])) {
     $connect_database->logout();
     header("Location: http://localhost/xampp/ecommerce/auth/login.php");

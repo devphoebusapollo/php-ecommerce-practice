@@ -1,6 +1,18 @@
 <?php
 session_start();
 include_once 'logic.php';
+
+/* Restrict access to this page is the user is not yet logged in and redirect to homepage */
+if (!isset($_SESSION['user'])) {
+    $_SESSION['not_logged'] = "Please login or register first.";
+    header("Location: http://localhost/xampp/ecommerce/auth/login.php");
+};
+
+/* If the user is not an admin, restrict them from accessing this page and redirect to homepage */
+if (!$_SESSION['user']['is_admin']) {
+    header("Location: http://localhost/xampp/ecommerce/index.php");
+};
+
 ?>
 
 <!DOCTYPE html>
@@ -15,11 +27,11 @@ include_once 'logic.php';
 </head>
 
 <body>
-    <?php include_once 'header.php' ?>
-    <?php if(count($error) > 0) { ?>
-    <div>
-        <?php echo $error['error'] ?>
-    </div>
+    <?php require './header.php'; ?>
+    <?php if (count($error) > 0) { ?>
+        <div>
+            <?php echo $error['error'] ?>
+        </div>
     <?php } ?>
     <h1>Add New Product</h1>
     <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']) ?>" method="post">

@@ -3,6 +3,11 @@
 include_once('./authentication.php');
 $users = $connect_database->all_users();
 
+/* If the user is already logged in, forbid access to register.php and redirect to homepage */
+if (isset($_SESSION['user'])) {
+    header("Location: http://localhost/xampp/ecommerce/index.php");
+};
+
 ?>
 
 <!DOCTYPE html>
