@@ -7,7 +7,7 @@ if(!$conn) {
 };
 //Get All Posts
 $sql = "SELECT * from products";
-$query = mysqli_query($conn, $sql);
+$all_products = mysqli_query($conn, $sql);
 
 
 //GET Product by ID

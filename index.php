@@ -42,10 +42,10 @@ include_once 'logic.php';
             <p class="">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
         </div>
         <div class="flex justify-between flex-wrap" id="shop">
-            <?php foreach ($query as $q) { ?>
+            <?php foreach ($all_products as $q) { ?>
                 <div class="w-[48%] my-4">
                     <a href="product-page.php?id=<?php echo $q['product_id'] ?>">
-                        <div><img class="product-image w-full" src="<?php echo $q['product_image'] ?>"></div>
+                        <div><img loading="lazy" class="product-image w-full" src="<?php echo $q['product_image'] ?>"></div>
                         <h2 class="font-bold my-6 text-xl"><?php echo $q['product_name'] ?></h2>
                         <p><?php echo $q['product_description'] ?></p>
                     </a>

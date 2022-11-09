@@ -26,9 +26,9 @@ class Connection
     public function all_users()
     {
         $sql = "SELECT * from users";
-        $query = $this->connection->query($sql);
+        $all_users = $this->connection->query($sql);
 
-        return $query;
+        return $all_users;
     }
 
     /* REGISTER */
@@ -59,6 +59,7 @@ class Connection
             header("Location: http://localhost/xampp/ecommerce/index.php");
         } else {
             $_SESSION['message'] = "The Username or Password is incorrect";
+
             header("Location: http://localhost/xampp/ecommerce/auth/login.php");
         }
     }
@@ -93,3 +94,7 @@ if (isset($_REQUEST['logout'])) {
     $connect_database->logout();
     header("Location: http://localhost/xampp/ecommerce/auth/login.php");
 };
+
+if(isset($_SESSION['user']['is_admin'])) {
+    $users = $connect_database->all_users();
+}
