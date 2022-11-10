@@ -21,16 +21,20 @@ if (isset($_SESSION['user'])) {
 </head>
 
 <body>
+    <?php if (isset($_SESSION['inputs'])) { ?>
+        <ul>
+            <li class="login-error"><?php echo $_SESSION['inputs'] ?></li>
+        </ul>
+    <?php } ?>
+    <?php if (isset($_SESSION['email'])) { ?>
+        <ul>
+            <li class="login-error"><?php echo $_SESSION['email'] ?></li>
+        </ul>
+    <?php } ?>
     <form action="./authentication.php" method="POST">
-        <div>
-            <input type="text" name="username">
-        </div>
-        <div>
-            <input type="email" name="email">
-        </div>
-        <div>
-            <input type="password" name="password">
-        </div>
+        <div><input type="text" name="username"></div>
+        <div><input type="text" name="email"></div>
+        <div><input type="password" name="password"></div>
         <button type="submit" name="register">Register</button>
     </form>
 </body>
