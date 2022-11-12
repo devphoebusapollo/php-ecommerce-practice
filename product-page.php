@@ -34,8 +34,14 @@ if(!isset($_SESSION['user'])) {
         <div>
             <?php foreach ($query as $q) { ?>
                 <h1><?php echo $q['product_name'] ?></h1>
-                <div><img class="product-image" src="<?php echo $q['product_image'] ?>"></div>
+                <div><img class="product_image" src="<?php echo $q['product_image'] ?>"></div>
                 <p><?php echo $q['product_description'] ?></p>
+                <form method="POST" action="http://localhost/xampp/ecommerce/logic.php">
+                    <input type="hidden" name="user" value="<?php echo $_SESSION['user']['id'] ?>">
+                    <input type="hidden" name="product_id" value="<?php echo $q['product_id'] ?>">
+                    <input type="hidden" name="product_name" value="<?php echo $q['product_name'] ?>">
+                    <input type="number" name="quantity" required><button name="add_to_cart">Add to cart</button>
+                </form>
                 <?php if ($_SESSION['user']['is_admin']) { ?>
                     <a href="edit-product.php?id=<?php echo $q['product_id'] ?>">Edit</a>
                     <form method="post">
