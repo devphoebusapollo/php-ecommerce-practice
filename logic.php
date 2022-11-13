@@ -87,8 +87,12 @@ class Cart
         $sql = "SELECT cart FROM users WHERE id = '$user_id'";
         $query = $this->connection->query($sql);
         $result = $query->fetch_assoc();
+        $decoded_result = json_decode($result['cart']);
 
-        return $result; //Associative Array
+        /* ?Reverse the result so the newly added product will be on top */
+        $reversed = array_reverse($decoded_result);
+
+        return $reversed; /* Array of Objects */
     }
 
 
@@ -96,12 +100,13 @@ class Cart
     public function add_to_cart($user_id, $data_from_cart, $product_data)
     {
 
-        /* Since the $data_from_cart['cart] is an array of JSON data, we decode it to become an array of object the same as the $product_data */
-        $existing = json_decode($data_from_cart);
-        $new_product = json_encode(array($product_data));
+        /* The $data_from_cart is already an array of objects as returned by the existing_cart method*/
+        $existing = $data_from_cart;
 
         /* If no existing products from the cart, create one */
         if (!$existing) {
+            /* Encode the $new_product */
+            $new_product = json_encode(array($product_data));
             $sql = "UPDATE users SET cart = '$new_product' WHERE id = '$user_id'";
             $query = $this->connection->query($sql); /* Boolean if Successful */
 
@@ -111,7 +116,9 @@ class Cart
         /* If there are existing products from the cart, add one */
         if ($existing) {
 
+            /* Join the he new product which is the $product_data with the existing product*/
             array_push($existing, $product_data);
+            /* The existing now containes an array of objects of the existing and new data so we encode them and store them now to the database */
             $add_both = json_encode($existing);
 
             /* Update the cart column of the user with the id stored on the $user_id variable */
@@ -121,12 +128,25 @@ class Cart
             return $query;
         };
     }
+
+    public function update_cart($user_id, $updated_cart)
+    {
+
+        $new_cart_items = json_encode($updated_cart);
+
+        $sql = "UPDATE users SET cart = '$new_cart_items' WHERE id = '$user_id'";
+        $query = $this->connection->query($sql); /* Boolean if Successful */
+
+        return $query;
+    }
 }
 
 
 /* Initialize Database connection for database CRUD */
 $cart = new Cart("localhost", "loren-practice", "pm-loren", "products");
 
+
+/* Add a product in the cart */
 if (isset($_REQUEST['add_to_cart'])) {
 
     /* Get all existing producuts from the cart */
@@ -141,14 +161,43 @@ if (isset($_REQUEST['add_to_cart'])) {
         "quantity" => $_REQUEST['quantity']
     );
 
-    $cart->add_to_cart($_REQUEST['user'], $data_from_cart['cart'], $product_data);
+    $cart->add_to_cart($_REQUEST['user'], $data_from_cart, $product_data);
+    header("Location: http://localhost/xampp/ecommerce/index.php");
 };
 
 /* Get all the products to display in the cart page */
-if(isset($_REQUEST['cart'])) {
+if (isset($_REQUEST['cart'])) {
     $id = $_REQUEST['cart'];
     $result = $cart->existing_cart($id);
-    return $result;
+
+    return $result; //Returns an array of objects
+}
+
+/* Delete an item from the cart */
+if (isset($_REQUEST['delete_from_cart'])) {
+
+    /* Get the id of the user and the id of the product to be deleted*/
+    $user_id = $_REQUEST['user_id'];
+    $id = $_REQUEST['product_id'];
+
+    /* Get all the existing products on the cart */
+    $result = $cart->existing_cart($user_id);
+
+    $prod = [];
+
+    /* Iterate over each product object to filter them using their id. The product id that does not match the $id will be pushed to prod array */
+    for ($i = 0; count($result) > $i; $i++) {
+        if ($result[$i]->product_id !== $id) {
+            array_push($prod, $result[$i]);
+        }
+    };
+
+    /* Update the cart column in the database with the products that remained in the prod array */
+    $cart->update_cart($user_id, $prod);
+    /* Get all the existing products in the cart */
+    $cart->existing_cart($user_id);
+
+    header("Location: http://localhost/xampp/ecommerce/cart.php?cart=${user_id}");
 }
 
 ?>
