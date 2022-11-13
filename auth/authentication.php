@@ -49,6 +49,9 @@ class Connection
 
         /* If the inputed password is the same as the hashed password on the database then proceed to login */
         if (password_verify($password, $row['password'])) {
+            if(isset($_SESSION['user'])) {
+                $_SESSION['user'] = $row;
+            };
             $_SESSION['user'] = $row;
             /* Unset the errors */
             unset($_SESSION['message']);

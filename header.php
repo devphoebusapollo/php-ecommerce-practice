@@ -10,6 +10,7 @@
 
         <!-- Display the Username and Logout button after the user logged in -->
         <?php if (isset($_SESSION['user'])) { ?>
+            <a href="http://localhost/xampp/ecommerce/cart.php?cart=<?php echo $_SESSION['user']['id'] ?>">Cart</a>
             <a><?php echo $_SESSION["user"]["username"] ?></a>
             <!-- If the user is an admin, show Admin Dashboard on the menu -->
             <?php if($_SESSION['user']['is_admin']) { ?>

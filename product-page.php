@@ -39,6 +39,7 @@ if(!isset($_SESSION['user'])) {
                 <form method="POST" action="http://localhost/xampp/ecommerce/logic.php">
                     <input type="hidden" name="user" value="<?php echo $_SESSION['user']['id'] ?>">
                     <input type="hidden" name="product_id" value="<?php echo $q['product_id'] ?>">
+                    <input type="hidden" name="product_image" value="<?php echo $q['product_image'] ?>">
                     <input type="hidden" name="product_name" value="<?php echo $q['product_name'] ?>">
                     <input type="number" name="quantity" required><button name="add_to_cart">Add to cart</button>
                 </form>
