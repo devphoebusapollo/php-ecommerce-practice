@@ -8,3 +8,18 @@ table, th, tr, td {
     border-collapse: collapse;
     width: 50%;
 }
+
+@media screen and (min-width: 1024px) {
+    /*CART*/
+    .product-wrapper {
+        width: 70%;
+        display: block;
+        margin: 0 auto;
+    }
+    .inner-div {
+        padding: 2em;
+    }
+    .cart-product-image {
+        max-width: 30%;
+    }
+}

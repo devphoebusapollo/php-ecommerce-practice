@@ -1,9 +1,10 @@
 <?php require '../logic.php'; ?>
 <?php require '../auth/authentication.php'; ?>
+<?php include '../config.php'; ?>
 <?php
 /* If the user is not an admin, restrict them from accessing the dashboard */
 if (!$_SESSION['user']['is_admin']) {
-    header("Location: http://localhost/xampp/ecommerce/index.php");
+    header("Location:" . $domain . "index.php");
 }; ?>
 
 <!DOCTYPE html>
@@ -50,9 +51,9 @@ if (!$_SESSION['user']['is_admin']) {
                 <td><?php echo $product['product_name'] ?></td>
                 <td><?php echo $product['product_description'] ?></td>
                 <td>
-                    <a href="http://localhost/xampp/ecommerce/product-page.php?id=<?php echo $product['product_id'] ?>">View</a>
+                    <a href="<?php echo $domain ?>/product-page.php?id=<?php echo $product['product_id'] ?>">View</a>
                     &nbsp;
-                    <a href="http://localhost/xampp/ecommerce/edit-product.php?id=<?php echo $product['product_id'] ?>">Edit</a>
+                    <a href="<?php echo $domain ?>/edit-product.php?id=<?php echo $product['product_id'] ?>">Edit</a>
                 </td>
             <tr>
             <?php } ?>
