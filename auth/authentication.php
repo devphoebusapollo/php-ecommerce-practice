@@ -2,6 +2,7 @@
 
 session_start();
 $errors = [];
+include('config.php');
 
 class Connection
 {
@@ -56,10 +57,11 @@ class Connection
             /* Unset the errors */
             unset($_SESSION['message']);
             unset($_SESSION['not_logged']);
-            header("Location: http://localhost/xampp/ecommerce/index.php");
+
+            return true;
         } else {
             $_SESSION['message'] = "The Username or Password is incorrect";
-            header("Location: http://localhost/xampp/ecommerce/auth/login.php");
+            return false;
         }
     }
 
@@ -72,7 +74,7 @@ class Connection
 };
 
 /* Create an object from the class */
-$connect_database = new Connection("localhost", "loren-practice", "pm-loren", "products");
+$connect_database = new Connection($db_host, $db_user, $db_password, $db_database);
 
 /* Register the user */
 if (isset($_REQUEST['register'])) {
@@ -83,7 +85,7 @@ if (isset($_REQUEST['register'])) {
     /* Check if all the necessary data are provided and valid upon registration */
     if(empty($input_username) || empty($input_email) || !$input_email || empty($input_password)) {
         $_SESSION['inputs'] = "Please provide all the neccessary and valid data";
-        header("Location: http://localhost/xampp/ecommerce/auth/register.php");
+        header("Location:" . $domain . "/auth/register.php");
     } else {
         $registered = $connect_database->register($input_username, $input_email, $input_password);
         unset($_SESSION['inputs']);
@@ -96,13 +98,18 @@ if (isset($_REQUEST['register'])) {
 
 /* Login user */
 if (isset($_REQUEST['login'])) {
-    $connect_database->check_login(htmlspecialchars(trim($_REQUEST['username'])), htmlspecialchars(trim($_REQUEST['password'])));
+    $login_success = $connect_database->check_login(htmlspecialchars(trim($_REQUEST['username'])), htmlspecialchars(trim($_REQUEST['password'])));
+    if($login_success) {
+        header("Location:" . $domain . "/index.php");
+    } else {
+        header("Location:" . $domain . "/auth/login.php");
+    }
 };
 
 /* Logout user */
 if (isset($_REQUEST['logout'])) {
     $connect_database->logout();
-    header("Location: http://localhost/xampp/ecommerce/auth/login.php");
+    header("Location:" . $domain . "/auth/login.php");
 };
 
 if (isset($_SESSION['user']['is_admin'])) {

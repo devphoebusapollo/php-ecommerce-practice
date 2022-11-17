@@ -1,6 +1,7 @@
 <?php
 $error = [];
-$conn = mysqli_connect("localhost", "loren-practice", "pm-loren", "products");
+include('config.php');
+$conn = mysqli_connect($db_host, $db_user, $db_password, $db_database);
 
 if (!$conn) {
     echo "Error Connection";
@@ -162,7 +163,7 @@ if (isset($_REQUEST['add_to_cart'])) {
     );
 
     $cart->add_to_cart($_REQUEST['user'], $data_from_cart, $product_data);
-    header("Location: http://localhost/xampp/ecommerce/index.php");
+    header("Location:" . $domain . "/cart.php?cart=" . $_REQUEST['user']);
 };
 
 /* Get all the products to display in the cart page */
@@ -197,7 +198,7 @@ if (isset($_REQUEST['delete_from_cart'])) {
     /* Get all the existing products in the cart */
     $cart->existing_cart($user_id);
 
-    header("Location: http://localhost/xampp/ecommerce/cart.php?cart=${user_id}");
+    header("Location:" . $domain . "/cart.php?cart=${user_id}");
 }
 
 ?>
