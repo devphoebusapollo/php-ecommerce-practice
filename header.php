@@ -1,6 +1,6 @@
 <nav class="flex justify-between py-px">
     <a href="http://localhost/xampp/ecommerce/index.php" class="text-2xl font-bold py-2 my-3 font-mono tracking-widest">PHP ECOMMERCE</a>
-    <div class="my-3 flex justify-between">
+    <div class="my-3 flex justify-between py-2 font-bold">
 
         <!-- Display Login and Register Button if the user is not logged in -->
         <?php if (!isset($_SESSION['user'])) { ?>
@@ -10,15 +10,15 @@
 
         <!-- Display the Username and Logout button after the user logged in -->
         <?php if (isset($_SESSION['user'])) { ?>
-            <a href="http://localhost/xampp/ecommerce/cart.php?cart=<?php echo $_SESSION['user']['id'] ?>">Cart</a>
+            <a href="http://localhost/xampp/ecommerce/cart.php?cart=<?php echo $_SESSION['user']['id'] ?>" class="px-5">Cart</a>
             <a><?php echo $_SESSION["user"]["username"] ?></a>
             <!-- If the user is an admin, show Admin Dashboard on the menu -->
-            <?php if($_SESSION['user']['is_admin']) { ?>
-                <a href="http://localhost/xampp/ecommerce/admin/dashboard.php">Admin Dashboard</a>
+            <?php if ($_SESSION['user']['is_admin']) { ?>
+                <a href="http://localhost/xampp/ecommerce/admin/dashboard.php" class="px-5">Dashboard</a>
             <?php } ?>
             <!-- Logout button -->
             <form method="POST" action="./auth/authentication.php">
-                <button type="submit" name="logout">Logout</button>
+                <button type="submit" name="logout" class="px-5 border-2 border-solid border-black ">Logout</button>
             </form>
         <?php } ?>
 

@@ -27,7 +27,7 @@ if (!$_SESSION['user']['is_admin']) {
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
-<body>
+<body class="w-3/5 mx-auto">
     <?php require './header.php'; ?>
     <div>
         <?php foreach ($query as $q) { ?>

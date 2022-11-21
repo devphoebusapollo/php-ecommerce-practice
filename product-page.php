@@ -23,13 +23,13 @@ if(!isset($_SESSION['user'])) {
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
-<body class="flex justify-center">
+<body class="w-3/5 mx-auto">
     <?php
 
     require './header.php';
 
     ?>
-    <div class="w-3/5">
+    <div class="flex justify-center">
         <?php include_once 'header.php' ?>
         <div>
             <?php foreach ($query as $q) { ?>

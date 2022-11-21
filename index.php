@@ -51,42 +51,6 @@ require "./auth/authentication.php";
             <?php } ?>
         </div>
     </div>
-
-    <?php
-    /*
-    class User {
-        public $name;
-        public $profession;
-
-        public function __construct($name, $profession)
-        {
-            $this->name = $name;
-            $this->profession = $profession;
-        }
-    };
-
-    $loren = new User("Loren", "Software Engineer");
-    $unknown = new User("Unknown", "Software Developer");
-
-    $array1 = array(
-        $loren,
-        $unknown
-    );
-
-    $encode = json_encode($array1);
-    $decode = json_decode($encode, true);
-
-    print_r($encode); 
-    print_r($decode); 
-
-    ?>
-
-    <?php foreach($decode as $data) { ?>
-        <h1 class="font-bold"><?php echo $data["name"] ?></h1>
-        <br/>
-        <p><?php echo $data["profession"] ?></p>
-    <?php } */?>
-
 </body>
 
 </html>

@@ -15,10 +15,10 @@ if (!$_SESSION['user']['is_admin']) {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard</title>
-    <link rel="stylesheet" type="text/css" href="http://localhost/xampp/ecommerce/styles/styles.css">
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
-<body>
+<body class="w-3/5 mx-auto">
     <?php require_once '../header.php'; ?>
     <h2>Users</h2>
     <table>
